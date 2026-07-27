@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docx Meta Cleaner - скачать программу для очистки метаданных Word</title>
+  <meta name="description" content="Docx Meta Cleaner очищает метаданные в DOCX, DOCM, DOTX и DOTM документах Word. Бесплатная Windows-программа без установки.">
+  <meta property="og:title" content="Docx Meta Cleaner">
+  <meta property="og:description" content="Очистка метаданных Word-документов в один клик.">
+  <meta property="og:type" content="website">
+  <style>
+    :root {
+      --bg: #f6f7f2;
+      --ink: #1e2420;
+      --muted: #5f6a63;
+      --line: #d9ded5;
+      --panel: #ffffff;
+      --brand: #1f7a5d;
+      --brand-dark: #155c45;
+      --accent: #d56b2d;
+      --soft: #e9f3ee;
+      --shadow: 0 18px 50px rgba(30, 36, 32, 0.11);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    code {
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 0.95em;
+      color: var(--brand-dark);
+    }
+
+    .shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 0 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .nav a {
+      text-decoration: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: 36px;
+      align-items: center;
+      padding: 28px 0 44px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--brand-dark);
+      font-size: 14px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(38px, 7vw, 76px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 650px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .button.primary {
+      background: var(--brand);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(31, 122, 93, 0.24);
+    }
+
+    .button.primary:hover {
+      background: var(--brand-dark);
+    }
+
+    .button.secondary {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+      max-width: 700px;
+    }
+
+    .fact {
+      border-top: 2px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .fact strong {
+      display: block;
+      font-size: 21px;
+    }
+
+    .fact span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .preview {
+      position: relative;
+      min-height: 430px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .window-bar {
+      display: flex;
+      gap: 7px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfa;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #c8cec6;
+    }
+
+    .app-mock {
+      padding: 26px;
+    }
+
+    .app-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .app-title img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+    }
+
+    .app-title strong {
+      display: block;
+      font-size: 22px;
+    }
+
+    .app-title span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .mock-row {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 14px;
+      align-items: start;
+      margin: 14px 0;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfa;
+    }
+
+    .mock-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 8px;
+      background: var(--soft);
+      color: var(--brand-dark);
+      font-weight: 800;
+    }
+
+    .mock-row strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .mock-row span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .mock-button {
+      margin-top: 22px;
+      height: 48px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 750;
+    }
+
+    section {
+      padding: 48px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 32px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      min-height: 180px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      letter-spacing: 0;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+      counter-reset: step;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--soft);
+      color: var(--brand-dark);
+      font-weight: 800;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .step span,
+    .checksum {
+      color: var(--muted);
+    }
+
+    .checksum {
+      overflow-wrap: anywhere;
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 14px;
+    }
+
+    .footer {
+      padding: 34px 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 820px) {
+      .shell {
+        padding: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .hero,
+      .grid,
+      .facts {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        min-height: 0;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/app.png" alt="">
+        <span>Docx Meta Cleaner</span>
+      </div>
+      <nav class="nav" aria-label="Навигация">
+        <a href="#download">Скачать</a>
+        <a href="#features">Возможности</a>
+        <a href="#how">Как пользоваться</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Windows · Word OpenXML</p>
+        <h1 id="hero-title">Docx Meta Cleaner</h1>
+        <p class="lead">Простая программа для удаления служебных метаданных из документов Word перед отправкой клиенту, преподавателю или публикацией.</p>
+        <div class="actions" id="download">
+          <a class="button primary" href="downloads/DocxMetaCleaner-v1.0.0.exe" download>Скачать для Windows</a>
+          <a class="button secondary" href="downloads/DocxMetaCleaner-v1.0.0.zip" download>Скачать ZIP</a>
+        </div>
+        <div class="facts" aria-label="Коротко о версии">
+          <div class="fact">
+            <strong>11.1 МБ</strong>
+            <span>готовый EXE без установки</span>
+          </div>
+          <div class="fact">
+            <strong>4 формата</strong>
+            <span>DOCX, DOCM, DOTX, DOTM</span>
+          </div>
+          <div class="fact">
+            <strong>.bak</strong>
+            <span>резервные копии по желанию</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview" aria-label="Вид интерфейса программы">
+        <div class="window-bar">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="app-mock">
+          <div class="app-title">
+            <img src="assets/app.png" alt="">
+            <div>
+              <strong>Docx Meta Cleaner</strong>
+              <span>Очистка метаданных Word</span>
+            </div>
+          </div>
+          <div class="mock-row">
+            <div class="mock-icon">1</div>
+            <div>
+              <strong>Один файл</strong>
+              <span>Выберите документ Word и очистите его метаданные.</span>
+            </div>
+          </div>
+          <div class="mock-row">
+            <div class="mock-icon">2</div>
+            <div>
+              <strong>Папка целиком</strong>
+              <span>Обработайте все поддерживаемые документы в выбранной папке.</span>
+            </div>
+          </div>
+          <div class="mock-button">Очистить метаданные</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" aria-labelledby="features-title">
+      <h2 id="features-title">Что очищается</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Свойства документа</h3>
+          <p>Удаляются <code>docProps/core.xml</code>, <code>app.xml</code>, <code>custom.xml</code>, миниатюры и связи на эти части документа.</p>
+        </article>
+        <article class="card">
+          <h3>Следы ZIP-пакета</h3>
+          <p>Очищаются ZIP-комментарии, extra-поля и исходные временные метки записей внутри OpenXML-файла.</p>
+        </article>
+        <article class="card">
+          <h3>Контент остается</h3>
+          <p>Текст, изображения, стили и макросы в <code>.docm</code> не удаляются. Старый бинарный <code>.doc</code> не поддерживается.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <h2 id="how-title">Как пользоваться</h2>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <strong>Скачайте файл</strong>
+            <span>Используйте EXE напрямую или ZIP, если браузер блокирует скачивание исполняемого файла.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <strong>Запустите программу</strong>
+            <span>Установка не нужна. Предупреждение SmartScreen возможно из-за отсутствия цифровой подписи.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <strong>Выберите файл или папку</strong>
+            <span>Для массовой очистки включите обработку подпапок и оставьте резервные копии, если нужен откат.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="verify-title">
+      <h2 id="verify-title">Проверка файла</h2>
+      <p>Контрольная сумма EXE:</p>
+      <p class="checksum">DB40F85BFD2684B9B1E90D676930F7B3E10094E211B55F847FA9D76696FBABDF</p>
+    </section>
+
+    <footer class="footer">
+      <span>Docx Meta Cleaner v1.0.0 · Windows · без установки</span>
+    </footer>
+  </main>
+</body>
+</html>
